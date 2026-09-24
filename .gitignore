@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Firebase Admin SDK - credenciales del service account (NO commitear)
+serviceAccountKey.json
