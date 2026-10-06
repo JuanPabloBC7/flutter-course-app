@@ -12,7 +12,7 @@ Backend: [flutter_course_backend - main (branch)](https://github.com/JuanPabloBC
 - [Video](https://drive.google.com/file/d/1YatGbW-SEUROhhDvGQt40QAryPF_YNx2/view?usp=drive_link)
 
 ### Sprint 3 – Modularization, Advance UI and Internazionalization
-- [Video](https://www.google.com)
+- Video
 
 ### Sprint 4 – Firebase and Notifications
 - [Summary](https://github.com/JuanPabloBC7/flutter_course/blob/feature/transversal_project/R-PROJECT-SUMMARY.md)
