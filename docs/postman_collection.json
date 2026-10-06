@@ -1,0 +1,149 @@
+{
+  "info": {
+    "name": "credit-cards-api",
+    "description": "Colección para la API de gestión de tarjetas de crédito. Números de tarjeta sintéticos (solo pruebas).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000/api/v1" },
+    { "key": "cardId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Crear tarjeta (VISA) - 201",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 201', () => pm.response.to.have.status(201));",
+              "const body = pm.response.json();",
+              "if (body && body.data && body.data.id) {",
+              "  pm.collectionVariables.set('cardId', body.data.id);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/credit-cards", "host": ["{{baseUrl}}"], "path": ["credit-cards"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": \"user-123\",\n  \"cardNumber\": \"4111111111111111\",\n  \"expirationMonth\": 12,\n  \"expirationYear\": 2030,\n  \"cvv\": \"123\",\n  \"creditLimit\": 5000.00\n}"
+        }
+      }
+    },
+    {
+      "name": "Crear tarjeta (Mastercard 2221) - 201",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/credit-cards", "host": ["{{baseUrl}}"], "path": ["credit-cards"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": \"user-456\",\n  \"cardNumber\": \"2221000000000009\",\n  \"expirationMonth\": 6,\n  \"expirationYear\": 2029,\n  \"cvv\": \"321\",\n  \"creditLimit\": 3000.00\n}"
+        }
+      }
+    },
+    {
+      "name": "Crear tarjeta - falta userId (400)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/credit-cards", "host": ["{{baseUrl}}"], "path": ["credit-cards"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"cardNumber\": \"4111111111111111\",\n  \"expirationMonth\": 12,\n  \"expirationYear\": 2030,\n  \"cvv\": \"123\",\n  \"creditLimit\": 5000\n}"
+        }
+      }
+    },
+    {
+      "name": "Crear tarjeta - Luhn inválido (400)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/credit-cards", "host": ["{{baseUrl}}"], "path": ["credit-cards"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": \"user-123\",\n  \"cardNumber\": \"4111111111111112\",\n  \"expirationMonth\": 12,\n  \"expirationYear\": 2030,\n  \"cvv\": \"123\",\n  \"creditLimit\": 5000\n}"
+        }
+      }
+    },
+    {
+      "name": "Listar tarjetas activas - 200",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/credit-cards", "host": ["{{baseUrl}}"], "path": ["credit-cards"] }
+      }
+    },
+    {
+      "name": "Obtener tarjeta por id - 200",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/credit-cards/{{cardId}}", "host": ["{{baseUrl}}"], "path": ["credit-cards", "{{cardId}}"] }
+      }
+    },
+    {
+      "name": "Obtener tarjeta - inexistente (404)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/credit-cards/550e8400-e29b-41d4-a716-446655440000",
+          "host": ["{{baseUrl}}"],
+          "path": ["credit-cards", "550e8400-e29b-41d4-a716-446655440000"]
+        }
+      }
+    },
+    {
+      "name": "Obtener tarjeta - id inválido (400)",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/credit-cards/not-a-uuid", "host": ["{{baseUrl}}"], "path": ["credit-cards", "not-a-uuid"] }
+      }
+    },
+    {
+      "name": "Actualizar tarjeta - 200",
+      "request": {
+        "method": "PATCH",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/credit-cards/{{cardId}}", "host": ["{{baseUrl}}"], "path": ["credit-cards", "{{cardId}}"] },
+        "body": { "mode": "raw", "raw": "{\n  \"creditLimit\": 7500.00,\n  \"status\": \"ACTIVE\"\n}" }
+      }
+    },
+    {
+      "name": "Actualizar tarjeta - cuerpo vacío (400)",
+      "request": {
+        "method": "PATCH",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/credit-cards/{{cardId}}", "host": ["{{baseUrl}}"], "path": ["credit-cards", "{{cardId}}"] },
+        "body": { "mode": "raw", "raw": "{}" }
+      }
+    },
+    {
+      "name": "Actualizar tarjeta - campo no permitido (400)",
+      "request": {
+        "method": "PATCH",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/credit-cards/{{cardId}}", "host": ["{{baseUrl}}"], "path": ["credit-cards", "{{cardId}}"] },
+        "body": { "mode": "raw", "raw": "{\n  \"userId\": \"otro-usuario\"\n}" }
+      }
+    },
+    {
+      "name": "Eliminar tarjeta (soft delete) - 204",
+      "request": {
+        "method": "DELETE",
+        "url": { "raw": "{{baseUrl}}/credit-cards/{{cardId}}", "host": ["{{baseUrl}}"], "path": ["credit-cards", "{{cardId}}"] }
+      }
+    },
+    {
+      "name": "Healthcheck",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://localhost:4000/health", "host": ["http://localhost:4000"], "path": ["health"] }
+      }
+    }
+  ]
+}
