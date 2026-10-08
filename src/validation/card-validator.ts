@@ -19,12 +19,19 @@ export interface ValidationResult {
 const BRAND_LENGTHS: Record<CardBrand, number[]> = {
   VISA: [13, 16, 19],
   MASTERCARD: [16],
+  'AMERICAN EXPRESS': [15],
+  DISCOVER: [16],
 };
 
-/** Longitud de CVV esperada por marca (Visa/Mastercard usan 3 dígitos). */
+/**
+ * Longitud de CVV esperada por marca.
+ * Visa, Mastercard y Discover usan 3 dígitos; American Express usa 4 (CID).
+ */
 const BRAND_CVV_LENGTHS: Record<CardBrand, number[]> = {
   VISA: [3],
   MASTERCARD: [3],
+  'AMERICAN EXPRESS': [4],
+  DISCOVER: [3],
 };
 
 /**
@@ -70,6 +77,27 @@ export function detectBrand(cardNumber: string): CardBrand | null {
   const firstFour = Number.parseInt(digits.slice(0, 4), 10);
   if (firstFour >= 2221 && firstFour <= 2720) {
     return 'MASTERCARD';
+  }
+
+  // AMERICAN EXPRESS 34 o 37
+  if (firstTwo === 34 || firstTwo === 37) {
+    return 'AMERICAN EXPRESS';
+  }
+
+  // DISCOVER 6011, 65, 644-649 o 622126–622925
+  const firstThree = Number.parseInt(digits.slice(0, 3), 10);
+  const firstSix = Number.parseInt(digits.slice(0, 6), 10);
+  if (firstFour === 6011) {
+    return 'DISCOVER';
+  }
+  if (firstTwo === 65) {
+    return 'DISCOVER';
+  }
+  if (firstThree >= 644 && firstThree <= 649) {
+    return 'DISCOVER';
+  }
+  if (firstSix >= 622126 && firstSix <= 622925) {
+    return 'DISCOVER';
   }
 
   return null;

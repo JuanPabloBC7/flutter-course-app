@@ -49,3 +49,6 @@ CREATE INDEX IF NOT EXISTS idx_credit_cards_user_active
 CREATE UNIQUE INDEX IF NOT EXISTS uq_credit_cards_user_fingerprint_active
   ON credit_cards (user_id, card_fingerprint)
   WHERE deleted_at IS NULL;
+
+ALTER TYPE card_brand ADD VALUE IF NOT EXISTS 'AMERICAN EXPRESS';
+ALTER TYPE card_brand ADD VALUE IF NOT EXISTS 'DISCOVER';

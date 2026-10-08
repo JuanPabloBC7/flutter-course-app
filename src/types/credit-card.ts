@@ -3,7 +3,7 @@
  */
 
 /** Marcas de tarjeta soportadas por la validación. */
-export type CardBrand = 'VISA' | 'MASTERCARD';
+export type CardBrand = 'VISA' | 'MASTERCARD' | 'AMERICAN EXPRESS' | 'DISCOVER';
 
 /** Estados admitidos para una tarjeta. */
 export type CardStatus = 'ACTIVE' | 'BLOCKED' | 'EXPIRED';
