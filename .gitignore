@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Salida generada por la herramienta Graphify (knowledge graph)
+graphify-out/
